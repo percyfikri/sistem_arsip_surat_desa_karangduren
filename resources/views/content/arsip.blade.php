@@ -31,11 +31,7 @@
                     <td>{{ $letter->title }}</td>
                     <td>{{ $letter->created_at->format('Y-m-d H:i') }}</td>
                     <td>
-                        <form action="{{ route('admin.arsip.destroy', $letter->letter_id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</button>
-                        </form>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('admin.arsip.destroy', $letter->letter_id) }}')">Hapus</button>
                         <a href="{{ asset('storage/'.$letter->path) }}" class="btn btn-warning btn-sm" target="_blank">Unduh</a>
                         <a href="{{ asset('storage/'.$letter->path) }}" class="btn btn-primary btn-sm" target="_blank">Lihat &gt;&gt;</a>
                     </td>
@@ -127,6 +123,29 @@
     </div>
 </div>
 
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header border-0">
+                <h5 class="modal-title w-100 fw-bold" id="confirmDeleteLabel">Alert</h5>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus arsip surat ini?</p>
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Batal</button>
+                <form id="deleteForm" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger px-4">Ya!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Script ini untuk submit form arsip surat via AJAX agar modal tidak tertutup saat error--}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('arsipForm');
@@ -175,5 +194,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+// Script untuk set action form hapus sesuai surat yang dipilih
+function confirmDelete(url) {
+    const form = document.getElementById('deleteForm');
+    form.action = url;
+    var modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+    modal.show();
+}
 </script>
 @endsection
