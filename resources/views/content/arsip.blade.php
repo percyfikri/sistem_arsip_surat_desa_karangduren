@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <h2 class="fw-bold">Arsip Surat</h2>
+    <h2 class="fw-semibold">Arsip Surat</h2>
     <p>Berikut ini adalah surat-surat yang telah terbit dan diarsipkan.<br>
         Klik <b>"Lihat"</b> pada kolom aksi untuk menampilkan surat.
     </p>
@@ -61,9 +61,9 @@
             <div class="modal-content">
                 <form id="arsipForm" action="{{ route('admin.arsip.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="arsipModalLabel">Arsip Surat &gt;&gt; Unggah</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    <div class="modal-header" style="background-color: #6289ff">
+                        <h5 class="modal-title" id="arsipModalLabel" style="color: white">Tambah Data</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
                     <div class="modal-body">
                         <p>Unggah surat yang telah terbit pada form ini untuk diarsipkan.<br>
@@ -73,7 +73,7 @@
                             </ul>
                         </p>
                         <div class="mb-3 row">
-                            <label for="nomor_surat" class="col-sm-3 col-form-label">Nomor Surat</label>
+                            <label for="nomor_surat" class="col-sm-3 col-form-label fw-semibold">Nomor Surat</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" required>
                                 @error('nomor_surat')
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="kategori" class="col-sm-3 col-form-label">Kategori</label>
+                            <label for="kategori" class="col-sm-3 col-form-label fw-semibold">Kategori</label>
                             <div class="col-sm-9">
                                 <select class="form-select" id="kategori" name="category_id" required>
                                     @foreach($categories as $cat)
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="judul" class="col-sm-3 col-form-label">Judul</label>
+                            <label for="judul" class="col-sm-3 col-form-label fw-semibold">Judul</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="judul" name="title" required>
                                 @error('title')
@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="file_surat" class="col-sm-3 col-form-label">File Surat (PDF)</label>
+                            <label for="file_surat" class="col-sm-3 col-form-label fw-semibold">File Surat (PDF)</label>
                             <div class="col-sm-9 d-flex flex-column">
                                 <input type="file" class="form-control" id="file_surat" name="file_surat" accept="application/pdf" required>
                                 <small class="text-danger mt-1">Ukuran file maksimal 5MB</small>
@@ -152,17 +152,33 @@
 <div class="modal fade" id="lihatArsipModal" tabindex="-1" aria-labelledby="lihatArsipLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold" id="lihatArsipLabel">Arsip Surat &gt;&gt; Lihat</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            <div class="modal-header border-0" style="background-color: #6289ff">
+                <h5 class="modal-title fw-bold" id="lihatArsipLabel" style="color: white">Lihat Data</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body">
                 <div id="arsipDetail">
                     <div class="mb-3">
-                        <div><b>Nomor:</b> <span id="lihat_nomor"></span></div>
-                        <div><b>Kategori:</b> <span id="lihat_kategori"></span></div>
-                        <div><b>Judul:</b> <span id="lihat_judul"></span></div>
-                        <div><b>Waktu Unggah:</b> <span id="lihat_waktu"></span></div>
+                        <div class="row mb-1">
+                            <div class="col-4 col-md-2 fw-bold">Nomor</div>
+                            <div class="col-1 fw-bold text-center">:</div>
+                            <div class="col fw-normal"><span id="lihat_nomor"></span></div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4 col-md-2 fw-bold">Kategori</div>
+                            <div class="col-1 fw-bold text-center">:</div>
+                            <div class="col fw-normal"><span id="lihat_kategori"></span></div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4 col-md-2 fw-bold">Judul</div>
+                            <div class="col-1 fw-bold text-center">:</div>
+                            <div class="col fw-normal"><span id="lihat_judul"></span></div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4 col-md-2 fw-bold">Waktu Unggah</div>
+                            <div class="col-1 fw-bold text-center">:</div>
+                            <div class="col fw-normal"><span id="lihat_waktu"></span></div>
+                        </div>
                     </div>
                     <div class="border p-2 mb-3" style="height:400px;">
                         <iframe id="lihat_pdf" src="" width="100%" height="100%" style="border:none;"></iframe>
@@ -185,19 +201,19 @@
             <form id="editArsipForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editArsipLabel">Arsip Surat &gt;&gt; Edit</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                <div class="modal-header"  style="background-color: #6289ff">
+                    <h5 class="modal-title" id="editArsipLabel" style="color: white">Edit Data</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 row">
-                        <label for="edit_nomor_surat" class="col-sm-3 col-form-label">Nomor Surat</label>
+                        <label for="edit_nomor_surat" class="col-sm-3 col-form-label fw-semibold">Nomor Surat</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="edit_nomor_surat" name="nomor_surat" required>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="edit_kategori" class="col-sm-3 col-form-label">Kategori</label>
+                        <label for="edit_kategori" class="col-sm-3 col-form-label fw-semibold">Kategori</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="edit_kategori" name="category_id" required>
                                 @foreach($categories as $cat)
@@ -207,13 +223,13 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="edit_judul" class="col-sm-3 col-form-label">Judul</label>
+                        <label for="edit_judul" class="col-sm-3 col-form-label fw-semibold">Judul</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="edit_judul" name="title" required>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="edit_file_surat" class="col-sm-3 col-form-label">File Surat (PDF)</label>
+                        <label for="edit_file_surat" class="col-sm-3 col-form-label fw-semibold">File Surat (PDF)</label>
                         <div class="col-sm-9 d-flex flex-column">
                             <input type="file" class="form-control" id="edit_file_surat" name="file_surat" accept="application/pdf">
                             <small class="text-danger mt-1">Ukuran file maksimal 5MB. Kosongkan jika tidak ingin mengganti file.</small>
@@ -258,7 +274,7 @@ function showEditArsipModal(letter) {
     // Isi data
     document.getElementById('edit_nomor_surat').value = letter.nomor_surat;
     document.getElementById('edit_judul').value = letter.judul;
-    document.getElementById('edit_file_info').innerHTML = `<span class="text-success">File saat ini: <a href="${letter.pdf_url}" target="_blank">Lihat PDF</a></span>`;
+    document.getElementById('edit_file_info').innerHTML = `<span>File saat ini: <a href="${letter.pdf_url}" target="_blank">Lihat PDF</a></span>`;
 
     // Set kategori terpilih
     var select = document.getElementById('edit_kategori');

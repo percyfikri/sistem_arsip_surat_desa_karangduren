@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <h2 class="fw-bold mb-4">About</h2>
+    <h2 class="fw-semibold mb-4">About</h2>
     <div class="d-flex align-items-start" style="gap: 32px;">
         <div>
             <div style="width:140px; height:140px; border:4px solid #222; border-radius:16px; display:flex; align-items:center; justify-content:center;">
@@ -14,27 +14,27 @@
             </div>
         </div>
         <div style="font-size:1.15rem;">
-            <div>Aplikasi ini dibuat oleh:</div>
+            <div>Aplikasi ini dibuat oleh :</div>
             <table style="margin-top:8px;">
                 <tr>
                     <td>Nama</td>
-                    <td>:</td>
-                    <td>{{ $user->username }}</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td class="fw-semibold">{{ $user->username }}</td>
                 </tr>
                 <tr>
                     <td>Prodi</td>
-                    <td>:</td>
-                    <td>{{ $user->prodi }}</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td class="fw-semibold">{{ $user->prodi }}</td>
                 </tr>
                 <tr>
                     <td>NIM</td>
-                    <td>:</td>
-                    <td>{{ $user->nim }}</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td class="fw-semibold">{{ $user->nim }}</td>
                 </tr>
                 <tr>
                     <td>Tanggal</td>
-                    <td>:</td>
-                    <td>{{ $user->created_at->format('d F Y') }}</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td class="fw-semibold">{{ $user->created_at->format('d F Y') }}</td>
                 </tr>
             </table>
         </div>

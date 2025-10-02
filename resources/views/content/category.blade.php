@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <h2 class="fw-bold">Kategori Surat</h2>
+    <h2 class="fw-semibold">Kategori Surat</h2>
     <p>Berikut ini adalah kategori yang bisa digunakan untuk melabeli surat.<br>
         Klik <b>"Tambah"</b> pada kolom aksi untuk menambahkan kategori baru.
     </p>
@@ -54,26 +54,26 @@
         <div class="modal-content">
             <form action="{{ route('admin.category.store') }}" method="POST">
                 @csrf
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold" id="tambahKategoriLabel">Kategori Surat &gt;&gt; Tambah</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                <div class="modal-header border-0" style="background-color: #6289ff">
+                    <h5 class="modal-title fw-bold" id="tambahKategoriLabel" style="color: white">Tambah Data</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
                     <p>Tambahkan atau edit data kategori. Jika sudah selesai, jangan lupa untuk mengklik tombol "Simpan"</p>
                     <div class="mb-3 row">
-                        <label for="id_kategori" class="col-sm-4 col-form-label">ID (Auto Increment)</label>
+                        <label for="id_kategori" class="col-sm-4 col-form-label fw-semibold">ID (Auto Increment)</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control form-control-sm" id="id_kategori" value="{{ $categories->last()?->category_id + 1 ?? 1 }}" disabled style="max-width:100px;">
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="name_category" class="col-sm-4 col-form-label">Nama Kategori</label>
+                        <label for="name_category" class="col-sm-4 col-form-label fw-semibold">Nama Kategori</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control form-control-sm" id="name_category" name="name_category" required style="max-width:300px;">
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="description" class="col-sm-4 col-form-label">Judul</label>
+                        <label for="description" class="col-sm-4 col-form-label fw-semibold">Judul</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                         </div>
@@ -90,31 +90,31 @@
 
 <!-- Modal Edit Kategori -->
 <div class="modal fade" id="editKategoriModal" tabindex="-1" aria-labelledby="editKategoriLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form id="editKategoriForm" method="POST">
                 @csrf
                 @method('PUT')
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold" id="editKategoriLabel">Kategori Surat &gt;&gt; Edit</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                <div class="modal-header border-0" style="background-color: #6289ff">
+                    <h5 class="modal-title fw-bold" id="editKategoriLabel" style="color: white">Edit Data</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
                     <p>Edit data kategori. Jika sudah selesai, jangan lupa untuk mengklik tombol "Simpan"</p>
                     <div class="mb-3 row">
-                        <label for="edit_id_kategori" class="col-sm-4 col-form-label">ID (Auto Increment)</label>
+                        <label for="edit_id_kategori" class="col-sm-4 col-form-label fw-semibold">ID (Auto Increment)</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control form-control-sm" id="edit_id_kategori" disabled style="max-width:100px;">
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="edit_name_category" class="col-sm-4 col-form-label">Nama Kategori</label>
+                        <label for="edit_name_category" class="col-sm-4 col-form-label fw-semibold">Nama Kategori</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control form-control-sm" id="edit_name_category" name="name_category" required style="max-width:300px;">
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="edit_description" class="col-sm-4 col-form-label">Judul</label>
+                        <label for="edit_description" class="col-sm-4 col-form-label fw-semibold">Judul</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
                         </div>
