@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Letters;
 use App\Models\Categories;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -131,5 +132,13 @@ class AdminController extends Controller
         $category = Categories::findOrFail($id);
         $category->delete();
         return redirect()->route('admin.category.index')->with('success', 'Kategori berhasil dihapus.');
+    }
+
+    // ABOUT PAGE
+    public function about()
+    {
+        // Ambil user pertama (atau sesuaikan dengan kebutuhan)
+        $user = User::first();
+        return view('content.about', compact('user'));
     }
 }

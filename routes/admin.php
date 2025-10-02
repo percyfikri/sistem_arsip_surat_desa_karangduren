@@ -18,3 +18,6 @@ Route::post('/category', [AdminController::class, 'storeCategory'])->name('categ
 Route::get('/category/{id}/edit', [AdminController::class, 'editCategory'])->name('category.edit');
 Route::put('/category/{id}', [AdminController::class, 'updateCategory'])->name('category.update');
 Route::delete('/category/{id}', [AdminController::class, 'destroyCategory'])->name('category.destroy');
+
+// About Page
+Route::get('/about', [AdminController::class, 'about'])->name('about');
