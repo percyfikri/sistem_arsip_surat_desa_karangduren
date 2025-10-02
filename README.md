@@ -16,7 +16,7 @@ Aplikasi web untuk mengelola arsip surat digital di lingkungan Karangduren. Sist
 - **Pencarian Surat:** Cari surat berdasarkan nomor, judul, atau kategori.
 - **Manajemen User:** Registrasi, login, dan logout user.
 - **Keamanan:** Autentikasi, otorisasi, dan proteksi CSRF.
-- **Responsive Design:** Tampilan nyaman di desktop maupun mobile.
+- **Responsive Design:** Tampilan nyaman di desktop.
 
 ## Cara Menjalankan
 
