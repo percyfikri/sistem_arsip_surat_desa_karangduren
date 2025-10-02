@@ -81,7 +81,6 @@
                             <label for="kategori" class="col-sm-3 col-form-label">Kategori</label>
                             <div class="col-sm-9">
                                 <select class="form-select" id="kategori" name="category_id" required>
-                                    <option value="">Pilih Kategori</option>
                                     @foreach($categories as $cat)
                                         <option value="{{ $cat->category_id }}" {{ old('category_id') == $cat->category_id ? 'selected' : '' }}>
                                             {{ $cat->name_category }}
