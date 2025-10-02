@@ -16,36 +16,34 @@
         <table class="table table-bordered align-middle">
             <thead class="table-secondary">
                 <tr>
-                    <th>ID Kategori</th>
-                    <th>Nama Kategori</th>
-                    <th>Keterangan</th>
-                    <th style="width:180px;">Aksi</th>
+                    <th style="width:40px;">No</th>
+                    <th class="text-center">ID Kategori</th>
+                    <th class="text-center">Nama Kategori</th>
+                    <th class="text-center">Keterangan</th>
+                    <th class="text-center" style="width:180px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($categories as $cat)
+                @forelse($categories as $i => $cat)
                 <tr>
-                    <td>{{ $cat->category_id }}</td>
+                    <td>{{ $i + 1 }}</td>
+                    <td class="text-center">{{ $cat->category_id }}</td>
                     <td>{{ $cat->name_category }}</td>
                     <td>{{ $cat->description }}</td>
-                    <td>
-                        <form action="{{ route('admin.category.destroy', $cat->category_id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm">Hapus</button>
-                        </form>
-                        <a href="{{ route('admin.category.edit', $cat->category_id) }}" class="btn btn-primary btn-sm ms-2">Edit</a>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('admin.category.destroy', $cat->category_id) }}')">Hapus</button>
+                        <a href="javascript:void(0)" onclick="showEditModal({{ $cat }})" class="btn btn-primary btn-sm ms-2">Edit</a>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="text-center">Tidak ada kategori.</td>
+                    <td colspan="5" class="text-center">Tidak ada kategori.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
-    <button class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#tambahKategoriModal">
+    <button class="btn btn-success mt-2 fw-bold" data-bs-toggle="modal" data-bs-target="#tambahKategoriModal">
         [+] Tambah Kategori Baru...
     </button>
 </div>
@@ -89,4 +87,87 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Edit Kategori -->
+<div class="modal fade" id="editKategoriModal" tabindex="-1" aria-labelledby="editKategoriLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form id="editKategoriForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="editKategoriLabel">Kategori Surat &gt;&gt; Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Edit data kategori. Jika sudah selesai, jangan lupa untuk mengklik tombol "Simpan"</p>
+                    <div class="mb-3 row">
+                        <label for="edit_id_kategori" class="col-sm-4 col-form-label">ID (Auto Increment)</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control form-control-sm" id="edit_id_kategori" disabled style="max-width:100px;">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="edit_name_category" class="col-sm-4 col-form-label">Nama Kategori</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="edit_name_category" name="name_category" required style="max-width:300px;">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="edit_description" class="col-sm-4 col-form-label">Judul</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-start border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">&lt;&lt; Kembali</button>
+                    <button type="submit" class="btn btn-success ms-2">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header border-0">
+                <h5 class="modal-title w-100 fw-bold" id="confirmDeleteLabel">Konfirmasi Hapus</h5>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus kategori ini?</p>
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Batal</button>
+                <form id="deleteForm" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger px-4">Ya!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Fungsi untuk membuka modal edit dan mengisi data
+function showEditModal(cat) {
+    document.getElementById('edit_id_kategori').value = cat.category_id;
+    document.getElementById('edit_name_category').value = cat.name_category;
+    document.getElementById('edit_description').value = cat.description;
+    // Set action form ke route update
+    document.getElementById('editKategoriForm').action = '/admin/category/' + cat.category_id;
+    var modal = new bootstrap.Modal(document.getElementById('editKategoriModal'));
+    modal.show();
+}
+
+// Fungsi untuk modal konfirmasi hapus
+function confirmDelete(url) {
+    document.getElementById('deleteForm').action = url;
+    var modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+    modal.show();
+}
+</script>
 @endsection
