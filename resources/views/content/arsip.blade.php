@@ -59,7 +59,7 @@
     <div class="modal fade" id="arsipModal" tabindex="-1" aria-labelledby="arsipModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="{{ route('admin.arsip.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="arsipForm" action="{{ route('admin.arsip.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="arsipModalLabel">Arsip Surat &gt;&gt; Unggah</h5>
@@ -108,8 +108,9 @@
                         </div>
                         <div class="mb-3 row">
                             <label for="file_surat" class="col-sm-3 col-form-label">File Surat (PDF)</label>
-                            <div class="col-sm-9 d-flex">
+                            <div class="col-sm-9 d-flex flex-column">
                                 <input type="file" class="form-control" id="file_surat" name="file_surat" accept="application/pdf" required>
+                                <small class="text-danger mt-1">Ukuran file maksimal 5MB</small>
                                 @error('file_surat')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
@@ -125,4 +126,54 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('arsipForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Reset error
+        document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+        document.querySelectorAll('.invalid-feedback').forEach(el => el.innerHTML = '');
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(async response => {
+            if (response.ok) {
+                // Sukses, reload halaman atau tutup modal dan refresh table
+                location.reload();
+            } else {
+                const data = await response.json();
+                if (data.errors) {
+                    Object.keys(data.errors).forEach(function(key) {
+                        const input = form.querySelector(`[name="${key}"]`);
+                        if (input) {
+                            input.classList.add('is-invalid');
+                            let feedback = input.parentElement.querySelector('.invalid-feedback');
+                            if (!feedback) {
+                                feedback = document.createElement('div');
+                                feedback.className = 'invalid-feedback';
+                                input.parentElement.appendChild(feedback);
+                            }
+                            feedback.innerHTML = data.errors[key][0];
+                        }
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            alert('Terjadi kesalahan. Silakan coba lagi.');
+        });
+    });
+});
+</script>
 @endsection

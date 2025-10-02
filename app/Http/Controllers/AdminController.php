@@ -21,7 +21,7 @@ class AdminController extends Controller
             'nomor_surat' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,category_id',
             'title' => 'required|string|max:255',
-            'file_surat' => 'required|mimes:pdf|max:2048',
+            'file_surat' => 'required|mimes:pdf|max:5120',
         ]);
 
         $file = $request->file('file_surat')->store('arsip', 'public');
