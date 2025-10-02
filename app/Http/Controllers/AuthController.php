@@ -50,8 +50,8 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'email'    => 'required|email:rfc,dns|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'prodi'    => 'nullable|string|max:255',
-            'nim'      => 'nullable|string|max:50',
+            'prodi'    => 'required|string|max:255',
+            'nim'      => 'required|string|max:50',
         ]);
 
         // default role (ubah sesuai kebutuhan)
@@ -60,8 +60,6 @@ class AuthController extends Controller
         // Eloquent akan hash otomatis karena cast 'password' => 'hashed'
         $user = User::create($data);
 
-        Auth::login($user);
-
-        return redirect()->route('dashboard');
+        return redirect()->route('login.form')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 }
