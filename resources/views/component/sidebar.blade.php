@@ -3,7 +3,7 @@
     <h3>Menu</h3>
     <ul style="list-style:none; padding:0;">
         <li><a href="{{ route('admin.arsip') }}">Arsip</a></li>
-        <li><a href="#">Kategori Surat</a></li>
+        <li><a href="{{ route('admin.category.index') }}">Kategori Surat</a></li>
         <li><a href="#">About</a></li>
         <li>
             <form action="{{ route('logout') }}" method="POST" class="d-inline">

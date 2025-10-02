@@ -83,4 +83,53 @@ class AdminController extends Controller
         $letter->delete();
         return redirect()->route('admin.arsip')->with('success', 'Surat berhasil dihapus.');
     }
+
+    // TAMPILKAN DAFTAR CATEGORY
+    public function category(Request $request)
+    {
+        $query = Categories::query();
+        if ($request->has('search')) {
+            $query->where('name_category', 'like', '%' . $request->search . '%');
+        }
+        $categories = $query->orderBy('category_id')->get();
+        return view('content.category', compact('categories'));
+    }
+
+    // TAMBAH CATEGORY
+    public function storeCategory(Request $request)
+    {
+        $validated = $request->validate([
+            'name_category' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+        ]);
+        Categories::create($validated);
+        return redirect()->route('admin.category.index')->with('success', 'Kategori berhasil ditambahkan.');
+    }
+
+    // EDIT CATEGORY (tampilkan form edit)
+    public function editCategory($id)
+    {
+        $category = Categories::findOrFail($id);
+        return view('content.edit_category', compact('category'));
+    }
+
+    // UPDATE CATEGORY
+    public function updateCategory(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name_category' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+        ]);
+        $category = Categories::findOrFail($id);
+        $category->update($validated);
+        return redirect()->route('admin.category.index')->with('success', 'Kategori berhasil diperbarui.');
+    }
+
+    // HAPUS CATEGORY
+    public function destroyCategory($id)
+    {
+        $category = Categories::findOrFail($id);
+        $category->delete();
+        return redirect()->route('admin.category.index')->with('success', 'Kategori berhasil dihapus.');
+    }
 }
