@@ -41,7 +41,7 @@
         </table>
     </div>
     <!-- Tombol untuk memunculkan modal -->
-    <button class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#arsipModal">
+    <button class="btn btn-outline-dark mt-2 fw-bold" data-bs-toggle="modal" data-bs-target="#arsipModal">
         Arsipkan Surat..
     </button>
 
