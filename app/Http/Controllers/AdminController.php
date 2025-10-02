@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Letters;
 use App\Models\Categories;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -75,8 +76,8 @@ class AdminController extends Controller
         $letter = Letters::findOrFail($id);
 
         // Hapus file PDF dari storage jika ada
-        if ($letter->path && \Storage::disk('public')->exists($letter->path)) {
-            \Storage::disk('public')->delete($letter->path);
+        if ($letter->path && Storage::disk('public')->exists($letter->path)) {
+            Storage::disk('public')->delete($letter->path);
         }
 
         $letter->delete();
