@@ -37,12 +37,6 @@
                     </td>
                 </tr>
                 @endforeach
-                <tr>
-                    <td colspan="5" class="text-center" style="height:50px;"></td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="text-center" style="height:50px;"></td>
-                </tr>
             </tbody>
         </table>
     </div>
