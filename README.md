@@ -1,6 +1,6 @@
 # Sistem Arsip Surat Desa Karangduren
 
-Aplikasi web untuk mengelola arsip surat digital di lingkungan Karangduren. Sistem ini memudahkan pencatatan, pengarsipan, pencarian, dan pengelolaan surat masuk/keluar secara elektronik.
+Aplikasi web untuk mengelola arsip surat digital di Desa Karangduren. Sistem ini memudahkan pencatatan, pengarsipan, pencarian, dan pengelolaan surat masuk/keluar secara digital.
 
 ## Tujuan
 
