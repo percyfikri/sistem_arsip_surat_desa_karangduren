@@ -33,7 +33,7 @@
                     <td>
                         <button class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('admin.arsip.destroy', $letter->letter_id) }}')">Hapus</button>
                         <a href="{{ asset('storage/'.$letter->path) }}" class="btn btn-warning btn-sm" target="_blank">Unduh</a>
-                        <a href="{{ asset('storage/'.$letter->path) }}" class="btn btn-primary btn-sm" target="_blank">Lihat &gt;&gt;</a>
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="showLihatModal({{ json_encode(['nomor_surat' => $letter->nomor_surat, 'kategori' => $letter->category->name_category ?? '-', 'judul' => $letter->title, 'waktu' => $letter->created_at->format('Y-m-d H:i'), 'pdf_url' => asset('storage/'.$letter->path), 'edit_url' => route('admin.arsip.edit', $letter->letter_id)]) }})">Lihat &gt;&gt;</a>
                     </td>
                 </tr>
                 @endforeach
@@ -51,7 +51,7 @@
         Arsipkan Surat..
     </button>
 
-    <!-- Modal Bootstrap -->
+    <!-- Modal Add Data -->
     <div class="modal fade" id="arsipModal" tabindex="-1" aria-labelledby="arsipModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -143,6 +143,52 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Lihat Arsip Surat -->
+<div class="modal fade" id="lihatArsipModal" tabindex="-1" aria-labelledby="lihatArsipLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold" id="lihatArsipLabel">Arsip Surat &gt;&gt; Lihat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <div id="arsipDetail">
+                    <div class="mb-3">
+                        <div><b>Nomor:</b> <span id="lihat_nomor"></span></div>
+                        <div><b>Kategori:</b> <span id="lihat_kategori"></span></div>
+                        <div><b>Judul:</b> <span id="lihat_judul"></span></div>
+                        <div><b>Waktu Unggah:</b> <span id="lihat_waktu"></span></div>
+                    </div>
+                    <div class="border p-2 mb-3" style="height:400px;">
+                        <iframe id="lihat_pdf" src="" width="100%" height="100%" style="border:none;"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">&lt;&lt; Kembali</button>
+                <a id="lihat_unduh" href="#" class="btn btn-warning" target="_blank">Unduh</a>
+                <a id="lihat_edit" href="#" class="btn btn-primary">Edit/Ganti File</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showLihatModal(letter) {
+    // Isi data ke modal
+    document.getElementById('lihat_nomor').textContent = letter.nomor_surat;
+    document.getElementById('lihat_kategori').textContent = letter.kategori;
+    document.getElementById('lihat_judul').textContent = letter.judul;
+    document.getElementById('lihat_waktu').textContent = letter.waktu;
+    document.getElementById('lihat_pdf').src = letter.pdf_url;
+    document.getElementById('lihat_unduh').href = letter.pdf_url;
+    document.getElementById('lihat_edit').href = letter.edit_url;
+
+    var modal = new bootstrap.Modal(document.getElementById('lihatArsipModal'));
+    modal.show();
+}
+</script>
 
 {{-- Script ini untuk submit form arsip surat via AJAX agar modal tidak tertutup saat error--}}
 <script>
