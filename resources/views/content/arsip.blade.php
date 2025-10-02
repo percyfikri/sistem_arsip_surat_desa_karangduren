@@ -33,7 +33,17 @@
                     <td>
                         <button class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('admin.arsip.destroy', $letter->letter_id) }}')">Hapus</button>
                         <a href="{{ asset('storage/'.$letter->path) }}" class="btn btn-warning btn-sm" target="_blank">Unduh</a>
-                        <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="showLihatModal({{ json_encode(['nomor_surat' => $letter->nomor_surat, 'kategori' => $letter->category->name_category ?? '-', 'judul' => $letter->title, 'waktu' => $letter->created_at->format('Y-m-d H:i'), 'pdf_url' => asset('storage/'.$letter->path), 'edit_url' => route('admin.arsip.edit', $letter->letter_id)]) }})">Lihat &gt;&gt;</a>
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
+                           onclick="showLihatModal({{ json_encode([
+                               'nomor_surat' => $letter->nomor_surat,
+                               'kategori' => $letter->category->name_category ?? '-',
+                               'judul' => $letter->title,
+                               'waktu' => $letter->created_at->format('Y-m-d H:i'),
+                               'pdf_url' => asset('storage/'.$letter->path),
+                               'edit_url' => route('admin.arsip.update', $letter->letter_id),
+                               'file_name' => basename($letter->path),
+                               'category_id' => $letter->category_id
+                           ]) }})">Lihat &gt;&gt;</a>
                     </td>
                 </tr>
                 @endforeach
@@ -168,18 +178,98 @@
     </div>
 </div>
 
+<!-- Modal Edit Arsip Surat -->
+<div class="modal fade" id="editArsipModal" tabindex="-1" aria-labelledby="editArsipLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editArsipForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editArsipLabel">Arsip Surat &gt;&gt; Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 row">
+                        <label for="edit_nomor_surat" class="col-sm-3 col-form-label">Nomor Surat</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="edit_nomor_surat" name="nomor_surat" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="edit_kategori" class="col-sm-3 col-form-label">Kategori</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="edit_kategori" name="category_id" required>
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->category_id }}">{{ $cat->name_category }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="edit_judul" class="col-sm-3 col-form-label">Judul</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="edit_judul" name="title" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="edit_file_surat" class="col-sm-3 col-form-label">File Surat (PDF)</label>
+                        <div class="col-sm-9 d-flex flex-column">
+                            <input type="file" class="form-control" id="edit_file_surat" name="file_surat" accept="application/pdf">
+                            <small class="text-danger mt-1">Ukuran file maksimal 5MB. Kosongkan jika tidak ingin mengganti file.</small>
+                            <span id="edit_file_info" class="mt-1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">&lt;&lt; Kembali</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
 function showLihatModal(letter) {
-    // Isi data ke modal
     document.getElementById('lihat_nomor').textContent = letter.nomor_surat;
     document.getElementById('lihat_kategori').textContent = letter.kategori;
     document.getElementById('lihat_judul').textContent = letter.judul;
     document.getElementById('lihat_waktu').textContent = letter.waktu;
     document.getElementById('lihat_pdf').src = letter.pdf_url;
     document.getElementById('lihat_unduh').href = letter.pdf_url;
-    document.getElementById('lihat_edit').href = letter.edit_url;
+
+    // Set tombol edit untuk menutup modal lihat dan buka modal edit
+    document.getElementById('lihat_edit').onclick = function() {
+        var lihatModal = bootstrap.Modal.getInstance(document.getElementById('lihatArsipModal'));
+        lihatModal.hide();
+        setTimeout(function() {
+            showEditArsipModal(letter);
+        }, 400); // beri jeda agar animasi modal tidak bertabrakan
+    };
 
     var modal = new bootstrap.Modal(document.getElementById('lihatArsipModal'));
+    modal.show();
+}
+
+function showEditArsipModal(letter) {
+    // Set action form
+    document.getElementById('editArsipForm').action = letter.edit_url;
+    // Isi data
+    document.getElementById('edit_nomor_surat').value = letter.nomor_surat;
+    document.getElementById('edit_judul').value = letter.judul;
+    document.getElementById('edit_file_info').innerHTML = `<span class="text-success">File saat ini: <a href="${letter.pdf_url}" target="_blank">Lihat PDF</a></span>`;
+
+    // Set kategori terpilih
+    var select = document.getElementById('edit_kategori');
+    for (var i = 0; i < select.options.length; i++) {
+        select.options[i].selected = (select.options[i].text === letter.kategori);
+    }
+
+    // Reset file input
+    document.getElementById('edit_file_surat').value = "";
+
+    var modal = new bootstrap.Modal(document.getElementById('editArsipModal'));
     modal.show();
 }
 </script>
