@@ -24,13 +24,16 @@ class AdminController extends Controller
             'file_surat' => 'required|mimes:pdf|max:5120',
         ]);
 
-        $file = $request->file('file_surat')->store('arsip', 'public');
+        // Simpan file dengan nama asli
+        $file = $request->file('file_surat');
+        $fileName = $file->getClientOriginalName();
+        $file->storeAs('arsip', $fileName, 'public');
 
         Letters::create([
             'nomor_surat' => $validated['nomor_surat'],
             'category_id' => $validated['category_id'],
             'title' => $validated['title'],
-            'path' => $file,
+            'path' => 'arsip/' . $fileName,
         ]);
 
         return redirect()->route('admin.arsip')->with('success', 'Surat berhasil diarsipkan.');
@@ -70,6 +73,12 @@ class AdminController extends Controller
     public function destroyArsip($id)
     {
         $letter = Letters::findOrFail($id);
+
+        // Hapus file PDF dari storage jika ada
+        if ($letter->path && \Storage::disk('public')->exists($letter->path)) {
+            \Storage::disk('public')->delete($letter->path);
+        }
+
         $letter->delete();
         return redirect()->route('admin.arsip')->with('success', 'Surat berhasil dihapus.');
     }
