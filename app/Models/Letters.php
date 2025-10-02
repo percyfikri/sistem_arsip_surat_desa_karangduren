@@ -20,7 +20,7 @@ class Letters extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'letter_id',
+        'nomor_surat',
         'category_id',
         'title',
         'path',
