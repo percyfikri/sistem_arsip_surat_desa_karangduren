@@ -25,29 +25,37 @@ Aplikasi web untuk mengelola arsip surat digital di lingkungan Karangduren. Sist
    git clone <repo-url>
    cd arsip-surat
 
-2. Install dependency
-    ```composer install 
-```npm install && npm run build`
+2. **Install dependency**
+   ```bash
+    composer install 
+    npm install && npm run build
 
 3. Copy file environment
-    ```cp .env.example .env
+    ```bash
+    cp .env.example .env
 
-4. cp .env.example .env
+4. Atur konfigurasi database di file .env.
 
 5. Generate key
-```php artisan key:generate`
+    ```bash
+    php artisan key:generate
 
-6. Migrasi dan seeder database
-    ```php artisan migrate:fresh --seed`
+7. Migrasi dan seeder database
+    ```bash
+    php artisan migrate:fresh --seed
 
-7. Jalankan server
-    ```php artisan serve`
+9. Jalankan server
+    ```bash
+    php artisan serve
 
-8. Akses aplikasi Buka browser ke http://localhost:8000
+11. Akses aplikasi Buka browser ke http://localhost:8000
 
 ## Screenshot
-
+1. **Tampilan Login**
 ![Tampilan Login](image.png)
+2. **Tampilan Arsip Surat**
 ![Tampilan Arsip Surat](image-1.png)
+3. **Tampilan Kategori Surat**
 ![Tampilan Kategori Surat](image-2.png)
+4. **Tampilan About**
 ![Tampilan About](image-3.png)
