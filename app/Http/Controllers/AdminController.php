@@ -10,9 +10,22 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
-    public function arsip()
+    public function arsip(Request $request)
     {
-        $letters = Letters::with('category')->latest()->get();
+        $query = Letters::with('category')->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nomor_surat', 'like', "%$search%")
+                    ->orWhere('title', 'like', "%$search%")
+                    ->orWhereHas('category', function ($qc) use ($search) {
+                        $qc->where('name_category', 'like', "%$search%");
+                    });
+            });
+        }
+
+        $letters = $query->get();
         $categories = Categories::all();
         return view('content.arsip', compact('letters', 'categories'));
     }

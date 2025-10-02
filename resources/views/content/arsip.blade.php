@@ -7,9 +7,9 @@
     <p>Berikut ini adalah surat-surat yang telah terbit dan diarsipkan.<br>
         Klik <b>"Lihat"</b> pada kolom aksi untuk menampilkan surat.
     </p>
-    <form class="d-flex mb-3" role="search">
+    <form class="d-flex mb-3" role="search" method="GET" action="{{ route('admin.arsip') }}">
         <label for="search" class="me-2 align-self-center">Cari surat:</label>
-        <input class="form-control me-2" type="search" id="search" name="search" placeholder="search" aria-label="Search" style="max-width:350px;">
+        <input class="form-control me-2" type="search" id="search" name="search" placeholder="search" aria-label="Search" style="max-width:350px;" value="{{ request('search') }}">
         <button class="btn btn-outline-dark" type="submit">Cari!</button>
     </form>
     <div class="table-responsive">
