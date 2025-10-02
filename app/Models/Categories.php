@@ -9,6 +9,11 @@ class Categories extends Model
 {
     use HasFactory;
 
+    protected $table = 'categories';
+    protected $primaryKey = 'category_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,5 +25,8 @@ class Categories extends Model
         'description',
     ];
 
-    // Additional methods for category-related functionalities can be added here
+    public function letters()
+    {
+        return $this->hasMany(Letters::class, 'category_id', 'category_id');
+    }
 }
