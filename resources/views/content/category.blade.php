@@ -42,11 +42,6 @@
                     <td colspan="4" class="text-center">Tidak ada kategori.</td>
                 </tr>
                 @endforelse
-                @for($i = 0; $i < 3; $i++)
-                <tr>
-                    <td colspan="4" style="height:40px;"></td>
-                </tr>
-                @endfor
             </tbody>
         </table>
     </div>
@@ -57,27 +52,38 @@
 
 <!-- Modal Tambah Kategori -->
 <div class="modal fade" id="tambahKategoriModal" tabindex="-1" aria-labelledby="tambahKategoriLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="{{ route('admin.category.store') }}" method="POST">
                 @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahKategoriLabel">Tambah Kategori Baru</h5>
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="tambahKategoriLabel">Kategori Surat &gt;&gt; Tambah</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name_category" class="form-label">Nama Kategori</label>
-                        <input type="text" class="form-control" id="name_category" name="name_category" required>
+                    <p>Tambahkan atau edit data kategori. Jika sudah selesai, jangan lupa untuk mengklik tombol "Simpan"</p>
+                    <div class="mb-3 row">
+                        <label for="id_kategori" class="col-sm-4 col-form-label">ID (Auto Increment)</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control form-control-sm" id="id_kategori" value="{{ $categories->last()?->category_id + 1 ?? 1 }}" disabled style="max-width:100px;">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Keterangan</label>
-                        <textarea class="form-control" id="description" name="description" rows="2" required></textarea>
+                    <div class="mb-3 row">
+                        <label for="name_category" class="col-sm-4 col-form-label">Nama Kategori</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="name_category" name="name_category" required style="max-width:300px;">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="description" class="col-sm-4 col-form-label">Judul</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer justify-content-start border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">&lt;&lt; Kembali</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="submit" class="btn btn-success ms-2">Simpan</button>
                 </div>
             </form>
         </div>
